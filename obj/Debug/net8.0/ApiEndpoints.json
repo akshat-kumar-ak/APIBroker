@@ -1,0 +1,60 @@
+[
+  {
+    "ContainingType": "APIBroker.Controllers.ApiBrokerController",
+    "Method": "GetExternalData",
+    "RelativePath": "api/ApiBroker/fetch",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "APIBroker.Controllers.RedisController",
+    "Method": "GetMetrics",
+    "RelativePath": "api/broker/metrics/{provider}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "provider",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "APIBroker.Controllers.RedisController",
+    "Method": "TrackProvider",
+    "RelativePath": "api/broker/track",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "APIBroker.Models.ProviderTrackRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "APIBroker.Controllers.LocationController",
+    "Method": "GetLocation",
+    "RelativePath": "api/Location/{ip}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ip",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

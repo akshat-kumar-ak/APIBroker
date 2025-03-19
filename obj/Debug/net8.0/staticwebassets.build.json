@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "SYEwC7BA0aq+FTlp0ItJ3SB3XmfG8xa4OlO5kU/aDzo=",
+  "Source": "APIBroker",
+  "BasePath": "_content/APIBroker",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
