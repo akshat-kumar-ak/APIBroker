@@ -30,7 +30,8 @@ namespace APIBroker.Services
             {
                 var provider = await SelectBestProviderAsync(triedProviders);
 
-                if (provider == null) throw new Exception("No available provider after trying all options.");
+                if (provider == null)
+                    throw new Exception("No available provider after trying all options.");
 
                 var url = $"{provider.BaseUrl}{ip}";
                 var startTime = DateTime.UtcNow;
@@ -42,9 +43,11 @@ namespace APIBroker.Services
 
                     if (response.IsSuccessStatusCode)
                     {
+                        // Track success in Redis
                         await _redisCacheService.TrackProviderMetricsAsync(provider.Name, true, responseTime);
+
                         var jsonString = await response.Content.ReadAsStringAsync();
-                        IpLocation ipLocation = new IpLocation { Ip = ip };
+                        IpLocation ipLocation = new IpLocation();
 
                         if (provider.Name == "free_ip_api")
                         {
@@ -58,6 +61,8 @@ namespace APIBroker.Services
                             ipLocation = JsonSerializer.Deserialize<IpLocation>(jsonString);
                             ipLocation.Provider = provider.Name;
                         }
+
+                        ipLocation.Ip = ip;
                         Console.WriteLine($"Provider: {ipLocation.Provider}, Country: {ipLocation.Country}, City: {ipLocation.City}");
                         return ipLocation;
                     }
@@ -86,7 +91,6 @@ namespace APIBroker.Services
                 }
             }
         }
-
 
         public async Task<Provider> SelectBestProviderAsync(List<string> excludedProviders)
         {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Akshat Kumar\\Desktop\\APIBroker\\APIBroker.csproj": {}
+    "C:\\Users\\Akshat Kumar\\Desktop\\Super Gaming Projects\\APIBroker\\APIBroker.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Akshat Kumar\\Desktop\\APIBroker\\APIBroker.csproj": {
+    "C:\\Users\\Akshat Kumar\\Desktop\\Super Gaming Projects\\APIBroker\\APIBroker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Akshat Kumar\\Desktop\\APIBroker\\APIBroker.csproj",
+        "projectUniqueName": "C:\\Users\\Akshat Kumar\\Desktop\\Super Gaming Projects\\APIBroker\\APIBroker.csproj",
         "projectName": "APIBroker",
-        "projectPath": "C:\\Users\\Akshat Kumar\\Desktop\\APIBroker\\APIBroker.csproj",
+        "projectPath": "C:\\Users\\Akshat Kumar\\Desktop\\Super Gaming Projects\\APIBroker\\APIBroker.csproj",
         "packagesPath": "C:\\Users\\Akshat Kumar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Akshat Kumar\\Desktop\\APIBroker\\obj\\",
+        "outputPath": "C:\\Users\\Akshat Kumar\\Desktop\\Super Gaming Projects\\APIBroker\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

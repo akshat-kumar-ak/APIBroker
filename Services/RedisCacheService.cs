@@ -21,39 +21,34 @@ namespace APIBroker.Services
             var currentTime = DateTime.UtcNow;
             var keyPrefix = $"provider:{provider}";
 
-            // Store timestamp for sliding window
-            await _database.SortedSetAddAsync($"{keyPrefix}:timestamps", currentTime.ToString("o"), currentTime.Ticks);
+            // Store success/failure as a sorted set with timestamp
+            var status = isSuccess ? "success" : "failure";
+            await _database.SortedSetAddAsync($"{keyPrefix}:{status}", currentTime.ToString("o"), currentTime.Ticks);
 
-            // Remove old entries (older than 5 minutes)
-            await _database.SortedSetRemoveRangeByScoreAsync($"{keyPrefix}:timestamps", double.NegativeInfinity, currentTime.AddMinutes(-5).Ticks);
+            // Track response time using sorted set
+            await _database.SortedSetAddAsync($"{keyPrefix}:responseTimes", responseTime, currentTime.Ticks);
 
-            // Track success and failures
-            if (isSuccess)
-            {
-                await _database.StringIncrementAsync($"{keyPrefix}:success");
-            }
-            else
-            {
-                await _database.StringIncrementAsync($"{keyPrefix}:failure");
-            }
+            // Remove entries older than 5 minutes (sliding window)
+            var minScore = currentTime.AddMinutes(-5).Ticks;
 
-            // Track total requests
-            await _database.StringIncrementAsync($"{keyPrefix}:total");
-
-            // Track response time
-            await _database.ListLeftPushAsync($"{keyPrefix}:responseTimes", responseTime);
-            await _database.ListTrimAsync($"{keyPrefix}:responseTimes", 0, 99); // Keep last 100 response times
+            await _database.SortedSetRemoveRangeByScoreAsync($"{keyPrefix}:success", double.NegativeInfinity, minScore);
+            await _database.SortedSetRemoveRangeByScoreAsync($"{keyPrefix}:failure", double.NegativeInfinity, minScore);
+            await _database.SortedSetRemoveRangeByScoreAsync($"{keyPrefix}:responseTimes", double.NegativeInfinity, minScore);
         }
 
         public async Task<ProviderMetrics> GetProviderMetricsAsync(string provider)
         {
+            var currentTime = DateTime.UtcNow;
+            var minScore = currentTime.AddMinutes(-5).Ticks;
             var keyPrefix = $"provider:{provider}";
 
-            var total = (int)await _database.StringGetAsync($"{keyPrefix}:total");
-            var failures = (int)await _database.StringGetAsync($"{keyPrefix}:failure");
-            var success = (int)await _database.StringGetAsync($"{keyPrefix}:success");
+            // Get counts for success, failure, and total within the last 5 minutes
+            var successCount = await _database.SortedSetLengthAsync($"{keyPrefix}:success", minScore, double.PositiveInfinity);
+            var failureCount = await _database.SortedSetLengthAsync($"{keyPrefix}:failure", minScore, double.PositiveInfinity);
+            var totalCount = successCount + failureCount;
 
-            var responseTimes = (await _database.ListRangeAsync($"{keyPrefix}:responseTimes"))
+            // Get response times within the last 5 minutes
+            var responseTimes = (await _database.SortedSetRangeByScoreAsync($"{keyPrefix}:responseTimes", minScore, double.PositiveInfinity))
                 .Select(x => double.Parse(x))
                 .ToList();
 
@@ -62,9 +57,9 @@ namespace APIBroker.Services
             return new ProviderMetrics
             {
                 Provider = provider,
-                TotalRequests = total,
-                FailureCount = failures,
-                SuccessCount = success,
+                TotalRequests = (int)totalCount,
+                FailureCount = (int)failureCount,
+                SuccessCount = (int)successCount,
                 AverageResponseTime = averageResponseTime
             };
         }

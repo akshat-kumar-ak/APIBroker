@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("APIBroker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7c308010a4158e2e776270422f22f6c96165a626")]
 [assembly: System.Reflection.AssemblyProductAttribute("APIBroker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("APIBroker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
